@@ -110,4 +110,4 @@ struct Modular {
     friend bool operator!(Modular const& a) {
         return a.value == 0;
     }
-};  using MInt = Modular<INF>;
+};

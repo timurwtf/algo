@@ -1,4 +1,4 @@
-vector<> dijkstra(int node, vector<vector<Edge>> &graph) {
+vector<long long> dijkstra(int node, vector<vector<Edge>> &graph) {
     const long long BIG = 1e18;
     const int n = (int) graph.size();
 
@@ -31,5 +31,5 @@ vector<> dijkstra(int node, vector<vector<Edge>> &graph) {
         }
     }
 
-    return ;
+    return dist;
 }

@@ -23,5 +23,5 @@ vector<int> bfs(int node, vector<vector<Edge>> &graph) {
         }
     }
 
-    return ;
+    return dist;
 }
