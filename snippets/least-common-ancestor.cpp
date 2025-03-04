@@ -1,14 +1,23 @@
-struct LeastCommonAncestor {
+struct LCA {
   vector<vector<int>> up;
   vector<int> depth, prev;
   int n, mxlog;
 
-  LeastCommonAncestor(const vector<vector<int>> &g, int r) {
+  LCA(const vector<vector<int>> &g, int r) {
     n = (int) g.size();
     mxlog = __lg(n) + 1;
     depth.assign(n, -1);
     prev.assign(n, -1);
-    lca_dfs(r, r, 0, g);
+    auto lca_dfs = [&](auto &&self, int v, int p, int d) -> void {
+      depth[v] = d;
+      prev[v] = p;
+      for (auto to : g[v]) {
+        if (to != p) {
+          self(self, to, v, d + 1);
+        }
+      }
+    };
+    lca_dfs(lca_dfs, r, r, 0);
     up.assign(mxlog, vector<int>(n));
     for (int i = 0; i < n; ++i) {
       up[0][i] = prev[i];
@@ -16,16 +25,6 @@ struct LeastCommonAncestor {
     for (int j = 1; j < mxlog; ++j) {
       for (int i = 0; i < n; ++i) {
         up[j][i] = up[j - 1][up[j - 1][i]];
-      }
-    }
-  }
-
-  void lca_dfs(int v, int p, int d, const vector<vector<int>> &g) {
-    depth[v] = d;
-    prev[v] = p;
-    for (auto to : g[v]) {
-      if (to != p) {
-        lca_dfs(to, v, d + 1, g);
       }
     }
   }
