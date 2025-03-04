@@ -4,7 +4,7 @@ struct SparseTable {
   vector<int> log;
 
   Type merge(Type &a, Type &b) {
-    return ; // here you need to return F(a, b)
+    return ; // you need to return F(a, b) here
   }
 
   SparseTable(vector<Type> &v) {
