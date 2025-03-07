@@ -31,7 +31,7 @@ struct SegmentTree {
     modify(i, x, 0, 0, n);
   }
 
-  Type query(int ql, int qr, int v, int l, int r) {
+  Type range_query(int ql, int qr, int v, int l, int r) {
     if (qr <= l || r <= ql) {
       return Type();
     }
@@ -39,10 +39,14 @@ struct SegmentTree {
       return tree[v];
     }
     int mid = (l + r) >> 1;
-    return query(ql, qr, 2 * v + 1, l, mid) + query(ql, qr, 2 * v + 2, mid, r);
+    return range_query(ql, qr, 2 * v + 1, l, mid) + range_query(ql, qr, 2 * v + 2, mid, r);
   }
 
-  Type query(int ql, int qr) {
-    return query(ql, qr, 0, 0, n);
+  Type range_query(int ql, int qr) {
+    return range_query(ql, qr, 0, 0, n);
+  }
+
+  Type query(int i) {
+    return range_query(i, i + 1, 0, 0, n);
   }
 };
