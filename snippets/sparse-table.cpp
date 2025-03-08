@@ -25,7 +25,7 @@ struct SparseTable {
     }
   }
 
-  Type get(int l, int r) {
+  Type query(int l, int r) {
     int len = r - l, j = log[len];
     return merge(table[j][l], table[j][r - (1 << j)]);
   }
