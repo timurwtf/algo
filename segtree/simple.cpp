@@ -1,29 +1,18 @@
-template <typename Info>
-class SimpleSegmentTree {
+template <typename T>
+class Tree {
  public:
-  vector<Info> info;
+  vector<T> info;
   int n;
 
-  SimpleSegmentTree() : n(0) {}
-  SimpleSegmentTree(int _n) : SimpleSegmentTree(vector<Info>(_n)) {}
-
-  SimpleSegmentTree(const vector<Info> &a) {
-    n = static_cast<int>(a.size());
-    info.resize(4 * n);
-    auto Build = [&](auto&& self, int v, int l, int r) -> void {
-      if (r - l == 1) {
-        info[v] = a[l];
-        return;
-      }
-      int mid = (l + r) >> 1;
-      self(self, 2 * v + 1, l, mid);
-      self(self, 2 * v + 2, mid, r);
-      info[v] = info[2 * v + 1] + info[2 * v + 2];
-    };
-    Build(Build, 0, 0, n);
+  Tree(int size) {
+    n = 1;
+    while (n < size) {
+      n <<= 1;
+    }
+    info.assign(2 * n, T());
   }
 
-  void Modify(int i, const Info &x, int v, int l, int r) {
+  void Modify(int i, const T &x, int v, int l, int r) {
     if (r - l == 1) {
       info[v] = x;
       return;
@@ -37,13 +26,13 @@ class SimpleSegmentTree {
     info[v] = info[2 * v + 1] + info[2 * v + 2];
   }
 
-  void Modify(int i, const Info &x) {
+  void Modify(int i, const T &x) {
     Modify(i, x, 0, 0, n);
   }
 
-  Info Query(int ql, int qr, int v, int l, int r) {
+  T Query(int ql, int qr, int v, int l, int r) {
     if (qr <= l || r <= ql) {
-      return Info();
+      return T();
     }
     if (ql <= l && r <= qr) {
       return info[v];
@@ -52,7 +41,7 @@ class SimpleSegmentTree {
     return Query(ql, qr, 2 * v + 1, l, mid) + Query(ql, qr, 2 * v + 2, mid, r);
   }
 
-  Info Query(int ql, int qr) {
+  T Query(int ql, int qr) {
     return Query(ql, qr, 0, 0, n);
   }
 };
