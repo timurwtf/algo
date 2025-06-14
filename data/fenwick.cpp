@@ -6,26 +6,30 @@ class FenwickTree {
 
   FenwickTree() : n(0) {}
   FenwickTree(int _n) : n(_n) {
-    fnw.resize(n + 1);
+    fnw.assign(n, T());
   }
 
   void Modify(int i, T val) {
-    ++i;
-    for (; i <= n; i += i & -i) {
+    while (i < n) {
       fnw[i] += val;
+      i |= i + 1;
     }
   }
 
   T Prefix(int i) {
-    ++i;
     T res = T();
-    for (; i > 0; i -= i & -i) {
+    while (i >= 0) {
       res += fnw[i];
+      i = (i & (i + 1)) - 1;
     }
     return res;
   }
 
-  T Query(int l, int r) {
-    return Prefix(r - 1) - Prefix(l - 1);
+  T Query(int i, int j) {
+    if (i == 0) {
+      return Prefix(j - 1);
+    } else {
+      return Prefix(j - 1) - Prefix(i - 1);
+    }
   }
 };
